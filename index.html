@@ -102,15 +102,13 @@
       color:var(--text);
     }
     .logo{
-      width:42px;height:42px;
-      border-radius: 14px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(124,255,178,.95), rgba(114,199,255,.75) 45%, rgba(0,0,0,.2) 70%),
-        linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,0));
-      box-shadow: var(--shadow);
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      object-fit:cover;
+      box-shadow: 0 20px 60px rgba(0,0,0,.45);
       border: 1px solid rgba(255,255,255,.14);
-      position:relative;
-      overflow:hidden;
+      background: rgba(0,0,0,.2);
     }
     .logo:after{
       content:"";
@@ -399,7 +397,7 @@
     <div class="wrap">
       <div class="topbar">
         <a class="brand" href="#" onclick="return false;">
-          <div class="logo" aria-hidden="true"></div>
+          <img class="logo" src="favicon.png" alt="Real Life Mods logo">
           <div>
             <h1>Real Life Mods</h1>
             <small>100% real • 100% liability • 100% working</small>
