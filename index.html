@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Real Life Mods</title>
+  <meta name="description" content="A totally serious, definitely real mod menu for real life. (Parody site)" />
+
+  <style>
+    :root{
+      --bg: #0b0f10;
+      --card: rgba(10, 14, 12, 0.72);
+      --card2: rgba(10, 14, 12, 0.55);
+      --text: #eaf6ef;
+      --muted: rgba(234, 246, 239, 0.75);
+      --accent: #7CFFB2;
+      --accent2: #72C7FF;
+      --danger: #ff6b6b;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 18px;
+      --ring: 0 0 0 3px rgba(124,255,178,.18);
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* Grass background + overlays */
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 35%, rgba(0,0,0,.78) 100%),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=70");
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.1) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .noise{
+      position:fixed;
+      inset:-20%;
+      z-index:-2;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+      background-size: 260px 260px;
+      mix-blend-mode: overlay;
+      pointer-events:none;
+    }
+    .vignette{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      background: radial-gradient(1200px 700px at 50% 10%, rgba(124,255,178,.12), transparent 60%),
+                  radial-gradient(900px 700px at 80% 70%, rgba(114,199,255,.10), transparent 55%),
+                  radial-gradient(900px 700px at 20% 75%, rgba(255,107,107,.06), transparent 55%);
+      pointer-events:none;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.2));
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .wrap{
+      width:min(1100px, 92vw);
+      margin-inline:auto;
+    }
+
+    .topbar{
+      display:flex;
+      gap:16px;
+      align-items:center;
+      justify-content:space-between;
+      padding:18px 0;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .logo{
+      width:42px;height:42px;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(124,255,178,.95), rgba(114,199,255,.75) 45%, rgba(0,0,0,.2) 70%),
+        linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,0));
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.14);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:after{
+      content:"";
+      position:absolute;
+      inset:-60%;
+      background: conic-gradient(from 90deg, transparent, rgba(255,255,255,.25), transparent);
+      animation: spin 5.5s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .brand h1{
+      font-size: 16px;
+      margin:0;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      opacity:.95;
+    }
+    .brand small{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing:.2px;
+      margin-top:2px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(10, 14, 12, 0.55);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      color: var(--muted);
+      font-size: 13px;
+      white-space:nowrap;
+    }
+
+    main{padding: 28px 0 60px}
+
+    .hero{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:22px;
+      align-items:stretch;
+      margin-top: 10px;
+    }
+    @media (max-width: 900px){
+      .hero{grid-template-columns:1fr}
+    }
+
+    .panel{
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position:relative;
+      overflow:hidden;
+    }
+    .panel:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(600px 240px at 30% 0%, rgba(124,255,178,.18), transparent 55%),
+                  radial-gradient(600px 260px at 100% 40%, rgba(114,199,255,.14), transparent 55%);
+      pointer-events:none;
+    }
+
+    .title{
+      margin: 0 0 10px;
+      font-size: 36px;
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    .subtitle{
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height:1.55;
+      font-size: 14.5px;
+      max-width: 62ch;
+    }
+
+    .ctaRow{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      text-decoration:none;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.085)}
+    .btn:focus{outline:none; box-shadow: var(--ring)}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,255,178,.28), rgba(114,199,255,.20));
+      border-color: rgba(124,255,178,.30);
+    }
+    .btn.danger{
+      background: linear-gradient(135deg, rgba(255,107,107,.20), rgba(255,255,255,.04));
+      border-color: rgba(255,107,107,.35);
+    }
+
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+    @media (max-width: 520px){
+      .kpi{grid-template-columns:1fr}
+    }
+    .stat{
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .stat b{display:block; font-size: 18px}
+    .stat span{display:block; color: var(--muted); font-size: 12px; margin-top: 4px}
+
+    .side{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .search{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      padding: 12px 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
+    }
+    .search input{
+      width:100%;
+      background: transparent;
+      border:none;
+      outline:none;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .search input::placeholder{color: rgba(234,246,239,.55)}
+
+    .filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(10, 14, 12, 0.55);
+      color: var(--muted);
+      font-size: 12px;
+      cursor:pointer;
+      user-select:none;
+      transition: background .12s ease, transform .12s ease, border-color .12s ease;
+    }
+    .chip:hover{transform: translateY(-1px)}
+    .chip.active{
+      background: rgba(124,255,178,.16);
+      border-color: rgba(124,255,178,.35);
+      color: var(--text);
+    }
+
+    .grid{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 620px){
+      .grid{grid-template-columns: 1fr}
+    }
+
+    .card{
+      background: var(--card2);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 16px 50px rgba(0,0,0,.34);
+      position:relative;
+      overflow:hidden;
+      transition: transform .12s ease, border-color .12s ease;
+      min-height: 172px;
+    }
+    .card:hover{transform: translateY(-2px); border-color: rgba(124,255,178,.28)}
+    .card h3{
+      margin: 0 0 8px;
+      font-size: 16px;
+      letter-spacing: .1px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .badge{
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--muted);
+      background: rgba(255,255,255,.05);
+    }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    .meta{
+      margin-top: 12px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .tag{
+      font-size: 11px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(234,246,239,.78);
+    }
+    .tag.green{border-color: rgba(124,255,178,.26)}
+    .tag.blue{border-color: rgba(114,199,255,.22)}
+    .tag.red{border-color: rgba(255,107,107,.22)}
+
+    footer{
+      padding: 22px 0 34px;
+      color: rgba(234,246,239,.68);
+      font-size: 12.5px;
+    }
+    footer .line{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin-bottom: 12px;
+    }
+    .tiny{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      padding: 2px 7px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.25);
+      color: rgba(234,246,239,.82);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="#" onclick="return false;">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <h1>Real Life Mods</h1>
+            <small>100% real • 0% liability • parody</small>
+          </div>
+        </a>
+
+        <div class="pill" title="This is Real Life Mods.">
+          🌿 Patch v1.0.0 • “Touch Grass” Edition
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <section class="hero">
+        <div class="panel">
+          <h2 class="title">Install mods. <span style="color:var(--accent)">In real life.</span> ⭐</h2>
+          <p class="subtitle">
+            Welcome to <b>Real Life Mods</b> — the modern mod menu for your daily NPC activities.
+            This is a <b>pretend</b> website made for real life. PLEASE attempt to “noclip” into the fridge at 3AM.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="#mods">🚀 View Mods</a>
+            <a class="btn" href="#faq">🧠 FAQ</a>
+            <a class="btn danger" href="#" onclick="fakeInstall(); return false;">⚠️ Install</a>
+          </div>
+
+          <div class="kpi" aria-label="stats">
+            <div class="stat"><b id="countMods">0</b><span>mods currently listed</span></div>
+            <div class="stat"><b>∞</b><span>grass blades rendered</span></div>
+            <div class="stat"><b>0</b><span>real world consequences</span></div>
+          </div>
+        </div>
+
+        <aside class="side">
+          <div class="panel">
+            <div class="search">
+              🔎
+              <input id="searchInput" type="text" placeholder="Search mods… (ex: fly, tree, noclip)" />
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="filters" aria-label="filters">
+              <div class="chip active" data-filter="all">✨ All</div>
+              <div class="chip" data-filter="movement">🏃 Movement</div>
+              <div class="chip" data-filter="utility">🧰 Utility</div>
+              <div class="chip" data-filter="meme">😂 Meme</div>
+              <div class="chip" data-filter="illegal">🚫 Definitely Not</div>
+            </div>
+
+            <div style="height:14px"></div>
+
+            <div class="pill" style="width:100%">
+              Tip: press <span class="kbd">Ctrl</span> + <span class="kbd">F</span> to enable “Thinking Method” faster 🧠✨
+            </div>
+          </div>
+
+          <div class="panel">
+            <h3 style="margin:0 0 8px; font-size:15px;">📦 Today’s “Added Mods”</h3>
+            <p style="margin:0; color:var(--muted); font-size:13px; line-height:1.5;">
+              Tree Method • Fly • Attestation Bypass • Travis Scott Event Spawner (mod-sided) • Noclip • Thinking Method
+            </p>
+          </div>
+        </aside>
+      </section>
+
+      <section id="mods" style="margin-top:18px;">
+        <div class="grid" id="modsGrid" aria-label="mods grid"></div>
+      </section>
+
+      <section id="faq" style="margin-top:18px;">
+        <div class="panel">
+          <h3 style="margin:0 0 10px;">🤔 FAQ</h3>
+          <p style="margin:0 0 10px; color:var(--muted); line-height:1.6;">
+            <b>Is this real?</b> Yes, Its very Real (Trust)
+          </p>
+          <p style="margin:0 0 10px; color:var(--muted); line-height:1.6;">
+            <b>What’s “Attestation Bypass” doing here?</b> It’s part of the joke list. This page does not provide instructions or tools.
+          </p>
+          <p style="margin:0; color:var(--muted); line-height:1.6;">
+            <b>Can I add more mods?</b> Yup — edit the <span class="kbd">mods</span> array in the script at the bottom.
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <div class="line"></div>
+        <div class="tiny">
+          <div>© <span id="year"></span> Real Life Mods • Made by Syzo🌿</div>
+          <div>Made for Funnies • https://discord.gg/vrcheats</div>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    const mods = [
+      {
+        name: "Tree Method",
+        badge: "NEW",
+        category: "movement",
+        desc: "Climb anything like it’s a perfectly grippable bark texture. Warning: trees may file bug reports.",
+        tags: ["movement", "outdoors", "grip++"],
+        color: "green"
+      },
+      {
+        name: "Fly",
+        badge: "HOT",
+        category: "movement",
+        desc: "Disable gravity for approximately 3 seconds (or until someone says ‘bro stop’).",
+        tags: ["movement", "airtime", "anti-fall"],
+        color: "blue"
+      },
+      {
+        name: "Attestation Bypass",
+        badge: "HOT",
+        category: "illegal",
+        desc: "Bypass the Attestation!",
+        tags: ["parody", "nope", "do-not"],
+        color: "red"
+      },
+      {
+        name: "Travis Scott Event Spawner (mod-sided)",
+        badge: "LOL",
+        category: "meme",
+        desc: "Summon a concert in your living room. Only you can see it. Everyone else just sees you emoting alone.",
+        tags: ["meme", "events", "solo-mode"],
+        color: "blue"
+      },
+      {
+        name: "Noclip",
+        badge: "OP",
+        category: "movement",
+        desc: "Walk through walls like a confused ghost. If you clip into the fridge, that’s on you.",
+        tags: ["movement", "phase", "speedrun"],
+        color: "green"
+      },
+      {
+        name: "Thinking Method",
+        badge: "BUFF",
+        category: "utility",
+        desc: "Increases IQ by 2. Temporarily. Side effects: reading the instructions.",
+        tags: ["utility", "brain", "focus"],
+        color: "green"
+      },
+
+      {
+        name: "Laundry Auto-Complete",
+        badge: "S+",
+        category: "utility",
+        desc: "Your clothes fold themselves. You still somehow lose one sock. (Unpatchable.)",
+        tags: ["utility", "chore", "quality-of-life"],
+        color: "blue"
+      },
+      {
+        name: "NPC Dialogue Skipper",
+        badge: "FAST",
+        category: "utility",
+        desc: "Skips small talk instantly. You’re polite, but at 4x speed.",
+        tags: ["utility", "social", "speedrun"],
+        color: "blue"
+      },
+      {
+        name: "Teleport to Kitchen",
+        badge: "META",
+        category: "movement",
+        desc: "Instantly appear near snacks. Cooldown increases if you say ‘I’m not hungry’.",
+        tags: ["movement", "food", "blink"],
+        color: "green"
+      },
+      {
+        name: "Infinite Rizz",
+        badge: "BRO",
+        category: "meme",
+        desc: "Adds +999 confidence. Removes the ability to be normal.",
+        tags: ["meme", "social", "charisma"],
+        color: "red"
+      },
+      {
+        name: "Teacher Vision Jammer",
+        badge: "NOPE",
+        category: "illegal",
+        desc: "Jam the Teachers Vision, Make them Temporarily Blind.",
+        tags: ["parody", "nope", "school"],
+        color: "red"
+      },
+      {
+        name: "Instant Homework",
+        badge: "W",
+        category: "utility",
+        desc: "Completes homework in 0.2s but leaves ‘Name: ____’ blank every time.",
+        tags: ["utility", "school", "oops"],
+        color: "blue"
+      },
+      {
+        name: "Rain Shield Bubble",
+        badge: "DRY",
+        category: "utility",
+        desc: "Personal weather dome. Friends will ask why you’re not wet. You must lie.",
+        tags: ["utility", "weather", "comfort"],
+        color: "green"
+      },
+      {
+        name: "Respectful Silence",
+        badge: "RARE",
+        category: "utility",
+        desc: "Boosts listening skill. Unlocks hidden cutscenes called ‘people like you more.’",
+        tags: ["utility", "social", "calm"],
+        color: "green"
+      }
+    ];
+
+    const grid = document.getElementById("modsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const chips = Array.from(document.querySelectorAll(".chip"));
+    const countMods = document.getElementById("countMods");
+
+    let activeFilter = "all";
+
+    function iconForCategory(cat){
+      if(cat === "movement") return "🏃";
+      if(cat === "utility") return "🧰";
+      if(cat === "meme") return "😂";
+      if(cat === "illegal") return "🚫";
+      return "✨";
+    }
+
+    function render(){
+      const q = (searchInput.value || "").trim().toLowerCase();
+
+      const filtered = mods.filter(m => {
+        const matchesFilter = (activeFilter === "all") || (m.category === activeFilter);
+        const hay = (m.name + " " + m.desc + " " + (m.tags || []).join(" ")).toLowerCase();
+        const matchesSearch = !q || hay.includes(q);
+        return matchesFilter && matchesSearch;
+      });
+
+      grid.innerHTML = filtered.map(m => `
+        <article class="card" data-category="${m.category}">
+          <h3>
+            <span aria-hidden="true">${iconForCategory(m.category)}</span>
+            ${escapeHtml(m.name)}
+            <span class="badge">${escapeHtml(m.badge || "MOD")}</span>
+          </h3>
+          <p>${escapeHtml(m.desc)}</p>
+          <div class="meta">
+            ${(m.tags || []).slice(0,4).map(t => `<span class="tag ${m.color || ""}">${escapeHtml(t)}</span>`).join("")}
+          </div>
+        </article>
+      `).join("");
+
+      countMods.textContent = String(mods.length);
+    }
+
+    function setFilter(next){
+      activeFilter = next;
+      chips.forEach(c => c.classList.toggle("active", c.dataset.filter === next));
+      render();
+    }
+
+    chips.forEach(chip => {
+      chip.addEventListener("click", () => setFilter(chip.dataset.filter));
+    });
+
+    searchInput.addEventListener("input", render);
+
+    function fakeInstall(){
+      const msgs = [
+        "✅ Installed: Touch Grass Patch 🌿",
+        "🧠 Thinking Method enabled (temporary).",
+        "🚀 Fly unlocked (requires imagination).",
+        "⚠️ Noclip attempted… you bumped into a door anyway.",
+        "😂 Event Spawner loaded: living room concert mode."
+      ];
+      alert(msgs[Math.floor(Math.random() * msgs.length)]);
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    render();
+  </script>
+</body>
+</html>
