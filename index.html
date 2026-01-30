@@ -849,7 +849,7 @@
       });
 
       grid.innerHTML = filtered.map(m => {
-        const idx = mods.indexOf(m); // stable index in main list
+        const idx = mods.indexOf(m);
         return `
           <article class="card" data-category="${m.category}">
             <h3>
@@ -865,7 +865,7 @@
             </div>
 
             <div class="installRow">
-              <span class="mini">Standalone • 100% pretend</span>
+              <span class="mini">Standalone</span>
               <button class="btn installBtn" type="button" data-install="${idx}">⬇️ Install</button>
             </div>
           </article>
