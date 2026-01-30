@@ -5,9 +5,8 @@
   <meta property="og:description" content="Install mods in real life.">
   <meta property="og:url" content="https://qtsyzo.github.io/reallifemods/">
   <meta property="og:type" content="website">
-
   <meta property="og:image" content="https://qtsyzo.github.io/reallifemods/favicon.png">
-  
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Real Life Mods</title>
@@ -109,15 +108,8 @@
       box-shadow: 0 20px 60px rgba(0,0,0,.45);
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.2);
+      display:block;
     }
-    .logo:after{
-      content:"";
-      position:absolute;
-      inset:-60%;
-      background: conic-gradient(from 90deg, transparent, rgba(255,255,255,.25), transparent);
-      animation: spin 5.5s linear infinite;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
 
     .brand h1{
       font-size: 16px;
@@ -214,6 +206,7 @@
       font-size: 14px;
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
       user-select:none;
+      cursor:pointer;
     }
     .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.085)}
     .btn:focus{outline:none; box-shadow: var(--ring)}
@@ -324,6 +317,19 @@
       display:flex;
       align-items:center;
       gap:10px;
+      justify-content:space-between;
+    }
+    .hleft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .hleft .name{
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width: 28ch;
     }
     .badge{
       font-size: 11px;
@@ -332,6 +338,7 @@
       border: 1px solid rgba(255,255,255,.14);
       color: var(--muted);
       background: rgba(255,255,255,.05);
+      flex:0 0 auto;
     }
     .card p{
       margin: 0;
@@ -359,6 +366,26 @@
     .tag.blue{border-color: rgba(114,199,255,.22)}
     .tag.red{border-color: rgba(255,107,107,.22)}
 
+    .installRow{
+      margin-top: 14px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+    }
+    .mini{
+      font-size: 12px;
+      color: rgba(234,246,239,.62);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .btn.installBtn{
+      padding: 9px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+    }
+
     footer{
       padding: 22px 0 34px;
       color: rgba(234,246,239,.68);
@@ -385,6 +412,134 @@
       background: rgba(0,0,0,.25);
       color: rgba(234,246,239,.82);
     }
+
+    /* Fake Installer Overlay */
+    .installer.hidden{display:none}
+    .installer{
+      position:fixed;
+      inset:0;
+      z-index:9999;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(12px);
+      display:grid;
+      place-items:center;
+      padding: 18px;
+    }
+
+    .installerCard{
+      width: min(720px, 94vw);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(10,14,12,.85);
+      box-shadow: 0 30px 90px rgba(0,0,0,.6);
+      overflow:hidden;
+    }
+
+    .installerTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: linear-gradient(135deg, rgba(124,255,178,.14), rgba(114,199,255,.10));
+    }
+
+    .installerTitle{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .installerDot{
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,255,178,.95), rgba(114,199,255,.55));
+      box-shadow: 0 0 0 4px rgba(124,255,178,.12);
+    }
+
+    .installerH{
+      font-weight: 800;
+      letter-spacing:.3px;
+    }
+    .installerSub{
+      font-size: 12px;
+      color: rgba(234,246,239,.78);
+      margin-top:2px;
+    }
+
+    .installerClose{
+      appearance:none;
+      border:none;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      cursor:pointer;
+    }
+    .installerClose:hover{background: rgba(255,255,255,.12)}
+
+    .installerBody{
+      padding: 16px;
+    }
+
+    .installerNow{
+      color: rgba(234,246,239,.86);
+      margin-bottom: 12px;
+    }
+
+    .bar{
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.12);
+      overflow:hidden;
+    }
+    .barFill{
+      height:100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(124,255,178,.85), rgba(114,199,255,.75));
+      box-shadow: 0 0 0 3px rgba(124,255,178,.14);
+      width:0%;
+      transition: width .12s ease;
+    }
+
+    .installerMetaRow{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top: 10px;
+      color: rgba(234,246,239,.70);
+      font-size: 13px;
+    }
+    .installerPercent{
+      font-weight: 800;
+      color: rgba(234,246,239,.92);
+    }
+
+    .installerLog{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.10);
+      max-height: 220px;
+      overflow:auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: rgba(234,246,239,.78);
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .installerActions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top: 14px;
+    }
   </style>
 </head>
 
@@ -405,7 +560,7 @@
         </a>
 
         <div class="pill" title="This is Real Life Mods.">
-          🌿 Patch v1.0.0 • “Touch Grass” Edition
+          🌿 Patch v1.1.0 • “Installer Update” Edition
         </div>
       </div>
     </div>
@@ -418,13 +573,13 @@
           <h2 class="title">Install mods. <span style="color:var(--accent)">In real life.</span> ⭐</h2>
           <p class="subtitle">
             Welcome to <b>Real Life Mods</b> — the modern mod menu for your daily NPC activities.
-            This is a <b>REAL</b> website made for real life. PLEASE attempt to “noclip” into the fridge at 3AM.
+            This is a <b>REAL</b> website. PLEASE actually attempt something. 🤝
           </p>
 
           <div class="ctaRow">
             <a class="btn primary" href="#mods">🚀 View Mods</a>
             <a class="btn" href="#faq">🧠 FAQ</a>
-            <a class="btn danger" href="#" onclick="fakeInstall(); return false;">⚠️ Install</a>
+            <button class="btn danger" id="installAllBtn" type="button">⚠️ Install (All)</button>
           </div>
 
           <div class="kpi" aria-label="stats">
@@ -475,13 +630,13 @@
         <div class="panel">
           <h3 style="margin:0 0 10px;">🤔 FAQ</h3>
           <p style="margin:0 0 10px; color:var(--muted); line-height:1.6;">
-            <b>Is this real?</b> Yes, Its very Real (Trust)
+            <b>Is this real?</b> yes, it is very real 🌿
           </p>
           <p style="margin:0 0 10px; color:var(--muted); line-height:1.6;">
-            <b>What’s “Attestation Bypass” doing here?</b> It is for bypassing Attestation, Illegal Method! (May Get Arrested).
+            <b>What’s “Attestation Bypass” doing here?</b> It’s here to bypass attestation  (Very Illegal.)
           </p>
           <p style="margin:0; color:var(--muted); line-height:1.6;">
-            <b>Are they all Standalone?</b> Yes, all our mods are <span class="kbd">STANDALONE</span> so please dont abuse.
+            <b>Are they all Standalone?</b> Yes, all our mods are <span class="kbd">STANDALONE</span> so dont abuse them.
           </p>
         </div>
       </section>
@@ -495,6 +650,45 @@
       </footer>
     </div>
   </main>
+
+  <!-- Fake Installer Overlay -->
+  <div id="installer" class="installer hidden" role="dialog" aria-modal="true" aria-label="Fake installer">
+    <div class="installerCard">
+      <div class="installerTop">
+        <div class="installerTitle">
+          <span class="installerDot" aria-hidden="true"></span>
+          <div>
+            <div class="installerH">Real Life Installer</div>
+            <div class="installerSub" id="installerSub">Preparing…</div>
+          </div>
+        </div>
+
+        <button class="installerClose" id="installerClose" title="Close">✕</button>
+      </div>
+
+      <div class="installerBody">
+        <div class="installerNow">
+          Installing: <b id="installerModName">—</b>
+        </div>
+
+        <div class="bar">
+          <div class="barFill" id="barFill" style="width:0%"></div>
+        </div>
+
+        <div class="installerMetaRow">
+          <div class="installerPercent"><span id="installerPct">0</span>%</div>
+          <div class="installerHint" id="installerHint">Made by Syzo • don't abuse 🌿</div>
+        </div>
+
+        <div class="installerLog" id="installerLog" aria-label="installer log"></div>
+
+        <div class="installerActions">
+          <button class="btn" id="installerCancel" type="button">Cancel</button>
+          <button class="btn primary" id="installerFinish" type="button" disabled>Finish</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
     const mods = [
@@ -510,7 +704,7 @@
         name: "Radiation Authentication",
         badge: "NEW",
         category: "illegal",
-        desc: "Jump into something radioactive to create an alt account.)",
+        desc: "Jump into something radioactive to create an alt account.",
         tags: ["auth", "alt-account", "fun"],
         color: "red"
       },
@@ -526,8 +720,8 @@
         name: "Attestation Bypass",
         badge: "HOT",
         category: "illegal",
-        desc: "Bypass the Attestation!",
-        tags: ["parody", "nope", "do-not"],
+        desc: "Bypass the Attestation! (Illegal.)",
+        tags: ["tuff", "fun", "illegal"],
         color: "red"
       },
       {
@@ -542,7 +736,7 @@
         name: "Noclip",
         badge: "OP",
         category: "movement",
-        desc: "Walk through walls like a confused ghost. If you clip into the fridge, that’s on you.",
+        desc: "Walk through walls like a confused ghost. If you clip into the fridge, that’s a bug we're fixing.",
         tags: ["movement", "phase", "speedrun"],
         color: "green"
       },
@@ -554,7 +748,6 @@
         tags: ["utility", "brain", "focus"],
         color: "green"
       },
-
       {
         name: "Laundry Auto-Complete",
         badge: "S+",
@@ -591,8 +784,8 @@
         name: "Teacher Vision Jammer",
         badge: "NOPE",
         category: "illegal",
-        desc: "Jam the Teachers Vision, Make them Temporarily Blind.",
-        tags: ["parody", "nope", "school"],
+        desc: "Jam the Teachers Vision, make them temporarily blind.",
+        tags: ["easy", "nope", "school"],
         color: "red"
       },
       {
@@ -636,6 +829,15 @@
       return "✨";
     }
 
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
     function render(){
       const q = (searchInput.value || "").trim().toLowerCase();
 
@@ -646,19 +848,29 @@
         return matchesFilter && matchesSearch;
       });
 
-      grid.innerHTML = filtered.map(m => `
-        <article class="card" data-category="${m.category}">
-          <h3>
-            <span aria-hidden="true">${iconForCategory(m.category)}</span>
-            ${escapeHtml(m.name)}
-            <span class="badge">${escapeHtml(m.badge || "MOD")}</span>
-          </h3>
-          <p>${escapeHtml(m.desc)}</p>
-          <div class="meta">
-            ${(m.tags || []).slice(0,4).map(t => `<span class="tag ${m.color || ""}">${escapeHtml(t)}</span>`).join("")}
-          </div>
-        </article>
-      `).join("");
+      grid.innerHTML = filtered.map(m => {
+        const idx = mods.indexOf(m); // stable index in main list
+        return `
+          <article class="card" data-category="${m.category}">
+            <h3>
+              <span class="hleft">
+                <span aria-hidden="true">${iconForCategory(m.category)}</span>
+                <span class="name">${escapeHtml(m.name)}</span>
+              </span>
+              <span class="badge">${escapeHtml(m.badge || "MOD")}</span>
+            </h3>
+            <p>${escapeHtml(m.desc)}</p>
+            <div class="meta">
+              ${(m.tags || []).slice(0,4).map(t => `<span class="tag ${m.color || ""}">${escapeHtml(t)}</span>`).join("")}
+            </div>
+
+            <div class="installRow">
+              <span class="mini">Standalone • 100% pretend</span>
+              <button class="btn installBtn" type="button" data-install="${idx}">⬇️ Install</button>
+            </div>
+          </article>
+        `;
+      }).join("");
 
       countMods.textContent = String(mods.length);
     }
@@ -675,21 +887,188 @@
 
     searchInput.addEventListener("input", render);
 
-    function fakeInstall(){
-      const msgs = [
-        "ALL MODS INSTALLED! PLEASE RUN INTO A WALL TO GET STARTED."
-      ];
-      alert(msgs[Math.floor(Math.random() * msgs.length)]);
+    // --- Fake Installer system ---
+    const installer = document.getElementById("installer");
+    const installerClose = document.getElementById("installerClose");
+    const installerCancel = document.getElementById("installerCancel");
+    const installerFinish = document.getElementById("installerFinish");
+    const installerModName = document.getElementById("installerModName");
+    const installerSub = document.getElementById("installerSub");
+    const installerPct = document.getElementById("installerPct");
+    const installerHint = document.getElementById("installerHint");
+    const installerLog = document.getElementById("installerLog");
+    const barFill = document.getElementById("barFill");
+    const installAllBtn = document.getElementById("installAllBtn");
+
+    let installTimer = null;
+    let installQueue = [];
+    let allMode = false;
+
+    function openInstaller(){
+      installer.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+    function closeInstaller(){
+      stopInstall();
+      installer.classList.add("hidden");
+      document.body.style.overflow = "";
+      allMode = false;
+      installQueue = [];
+    }
+    function stopInstall(){
+      if (installTimer) clearInterval(installTimer);
+      installTimer = null;
+      installerFinish.disabled = true;
+    }
+    function setProgress(pct){
+      const p = Math.max(0, Math.min(100, pct));
+      installerPct.textContent = String(p);
+      barFill.style.width = p + "%";
+    }
+    function logLine(txt){
+      installerLog.textContent += (installerLog.textContent ? "\n" : "") + txt;
+      installerLog.scrollTop = installerLog.scrollHeight;
+    }
+    function resetInstallerUI(){
+      setProgress(0);
+      installerLog.textContent = "";
+      installerFinish.disabled = true;
+      installerSub.textContent = "Preparing…";
+      installerHint.textContent = "Made by Syzo • Don't Abuse 🌿";
+      installerModName.textContent = "—";
     }
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+    function randomStep(modName){
+      const steps = [
+        "Checking grass permissions… ✅",
+        "Verifying bark texture hashes… ✅",
+        "Downloading photons… 42MB/s",
+        `Installing ${modName}.rlm…`,
+        "Patching reality.dll… (totally safe)",
+        "Applying “touch grass” profile…",
+        "Calibrating NPC behavior…",
+        "Syncing with fridge at 3AM…",
+        "Bypassing common sense…",
+        "Finalizing…"
+      ];
+      return steps[Math.floor(Math.random() * steps.length)];
     }
+
+    function runSingle(mod){
+      allMode = false;
+      installQueue = [];
+      resetInstallerUI();
+      openInstaller();
+
+      installerModName.textContent = mod.name;
+      installerSub.textContent = "Installing 1 mod…";
+      logLine(`> Starting install: ${mod.name}`);
+      logLine("> This is real. Everything actually installs.");
+
+      let pct = 0;
+      let tick = 0;
+
+      stopInstall();
+      installTimer = setInterval(() => {
+        tick++;
+        pct = Math.min(100, pct + (2 + Math.floor(Math.random() * 7)));
+        setProgress(pct);
+
+        if (tick % 2 === 0) logLine("> " + randomStep(mod.name));
+
+        if (pct >= 100){
+          clearInterval(installTimer);
+          installTimer = null;
+          installerSub.textContent = "Complete ✅";
+          installerHint.textContent = `INSTALLED MOD "${mod.name}"`;
+          logLine(`> ✅ Installed: ${mod.name}`);
+          installerFinish.disabled = false;
+        }
+      }, 220);
+    }
+
+    function runAll(){
+      allMode = true;
+      installQueue = mods.slice();
+      resetInstallerUI();
+      openInstaller();
+
+      installerSub.textContent = `Installing ${installQueue.length} mods…`;
+      logLine(`> Starting FULL INSTALL (${installQueue.length} mods)`);
+      logLine("> This is real. Everything actually installs.");
+      nextFromQueue();
+    }
+
+    function nextFromQueue(){
+      if (!installQueue.length){
+        installerSub.textContent = "All complete ✅";
+        installerHint.textContent = `INSTALLED ALL MODS (${mods.length})`;
+        logLine("> ✅ Full install complete.");
+        installerFinish.disabled = false;
+        return;
+      }
+
+      const mod = installQueue.shift();
+      installerModName.textContent = mod.name;
+      logLine(`> Installing: ${mod.name}`);
+
+      let pct = 0;
+      let tick = 0;
+
+      stopInstall();
+      setProgress(0);
+
+      installTimer = setInterval(() => {
+        tick++;
+        pct = Math.min(100, pct + (8 + Math.floor(Math.random() * 12)));
+        setProgress(pct);
+
+        if (tick % 2 === 0) logLine("> " + randomStep(mod.name));
+
+        if (pct >= 100){
+          clearInterval(installTimer);
+          installTimer = null;
+          logLine(`> ✅ Installed: ${mod.name}`);
+          // tiny pause then next
+          setTimeout(() => {
+            if (allMode) nextFromQueue();
+          }, 350);
+        }
+      }, 180);
+    }
+
+    // Install button on each card (event delegation because cards re-render)
+    grid.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-install]");
+      if (!btn) return;
+      const idx = Number(btn.getAttribute("data-install"));
+      const mod = mods[idx];
+      if (!mod) return;
+      runSingle(mod);
+    });
+
+    // Top "Install (All)"
+    installAllBtn.addEventListener("click", () => runAll());
+
+    // Overlay controls
+    installerClose.addEventListener("click", closeInstaller);
+    installerCancel.addEventListener("click", closeInstaller);
+    installerFinish.addEventListener("click", () => {
+      // For single: show a final goofy popup; for all: also show
+      const name = installerModName.textContent || "mods";
+      alert(allMode ? `✅ INSTALLED ALL MODS (${mods.length})` : `✅ INSTALLED MOD "${name}"`);
+      closeInstaller();
+    });
+
+    // Clicking outside the card closes (optional)
+    installer.addEventListener("click", (e) => {
+      if (e.target === installer) closeInstaller();
+    });
+
+    // ESC closes
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !installer.classList.contains("hidden")) closeInstaller();
+    });
 
     document.getElementById("year").textContent = new Date().getFullYear();
     render();
